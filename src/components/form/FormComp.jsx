@@ -1,9 +1,9 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 import { Button, Stack } from '@mui/material';
-import { ErrorSharp } from '@mui/icons-material';
+import { Form } from 'formik';
 
-const Form = () => {
+const FormComp = ({ values, handleChange, errors, touched, handleBlur }) => {
     return (
         <Form>
             <Stack spacing={3} direction='column' >
@@ -12,7 +12,7 @@ const Form = () => {
                     type='text'
                     name='firstName'
                     variant='outlined'
-                    value={null}
+                    value={values.firstName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     id="firstName"
@@ -24,9 +24,9 @@ const Form = () => {
                     type='text'
                     name='lastName'
                     variant='outlined'
-                    value={null}
-                    onChange={handleChange && null}
-                    onBlur={handleBlur && null}
+                    value={values.lastName}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                     id="lastName"
                     helperText={touched.lastName && errors.lastName}
                     error={touched.lastName && Boolean(errors.lastName)}
@@ -37,8 +37,8 @@ const Form = () => {
                     id="email"
                     type="email"
                     variant="outlined"
-                    value={null}
-                    onChange={handleChange && null}
+                    value={values.email}
+                    onChange={handleChange}
                     onBlur={handleBlur && null}
                     helperText={touched.email && errors.email}
                     error={touched.email && Boolean(errors.email)}
@@ -49,7 +49,7 @@ const Form = () => {
                     id="password"
                     type="password"
                     variant="outlined"
-                    value={null}
+                    value={values.password}
                     onChange={handleChange && null}
                     onBlur={handleBlur && null}
                     helperText={touched.password && errors.password}
@@ -59,10 +59,11 @@ const Form = () => {
                     variant='contained'
                     type='submit'
                     value='submit'
+                    size='large'
                 >Submit</Button>
             </Stack>
         </Form>
     )
 }
 
-export default Form
+export default FormComp
