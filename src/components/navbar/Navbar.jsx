@@ -1,44 +1,100 @@
-import {useNavigate} from 'react-router-dom'
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import Container from '@mui/material/Container';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import FGlogo from '../../assets/logo-FG.png'
+import { Link, useNavigate } from 'react-router-dom';
+import { AccountCircleTwoTone } from '@mui/icons-material';
+// import { logOut } from '../../helpers/authFunctions';
+// import { AuthUserContext } from '../../context/AuthContext';
+// import { Avatar } from '@mui/material';
+
 
 const Navbar = () => {
-    const navigate = useNavigate()
+    const [anchorElUser, setAnchorElUser] = React.useState(null);
+    // const { currentUser } = React.useContext(AuthUserContext)
+    const currentUser = false
+    const navigate = useNavigate();
+    const settings = currentUser ? ['About', 'Profile', 'New', 'Logout'] : ['About', 'Login', 'Register'];
+    const handleOpenUserMenu = (event) => {
+        setAnchorElUser(event.currentTarget);
+    };
+
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
+    const handleLogout = () => {
+        navigate('/')
+
+    }
+
     return (
-        <div class="navbar bg-base-100 bg-blue-600 text-slate-400">
-            <div class="flex-1" onClick={() => navigate('/')}>
-                <a class="btn btn-ghost normal-case text-xl">Fatih Günaydın</a>
-            </div>
-            <div class="flex-none">
-                <ul class="menu menu-horizontal p-0">
-                    <li onClick={() => navigate('/about')}><a>About</a></li>
-                    <li><a>Profile</a></li>
-                    <li tabindex="0">
-                        <a>
-                            Account
-                            <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" /></svg>
-                        </a>
-                        <ul class="p-2 bg-base-100">
-                            <li onClick={()=>navigate('/register')}><a>Register</a></li>
-                            <li onClick={() => navigate('/login')}><a>Login</a></li>
-                            <li><a>Logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <div class="dropdown dropdown-end">
-                    <label tabindex="0" class="btn btn-ghost btn-circle avatar">
-                        <div class="w-10 rounded-full">
-                            <img src="https://placeimg.com/80/80/people" />
-                        </div>
-                    </label>
-                    <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                        <li><a class="justify-between">Profile</a></li>
-                        <li><a>About</a></li>
-                        <li><a>Register</a></li>
-                        <li><a>Login</a></li>
-                        <li><a>Logout</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        <AppBar position="static" color='info'>
+            <Container maxWidth="xl" >
+                <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between' }} >
+
+                    <Container title='Click for information About Me' sx={{ display: { xs: 'none', md: 'flex' }, width: '150px', cursor: 'pointer' }}>
+                        <img src={FGlogo} alt="logo" width='100%' onClick={null} />
+                    </Container>
+                    <Container sx={{ display: { xs: 'flex', md: 'none' }, width: '100px' }}>
+                        <img src={FGlogo} alt="FGlogo" width='100%' />
+                    </Container>
+
+                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                        <Typography variant='h5' href='/' component='a' sx={{ textDecoration: 'none', color: 'inherit' }} >── <span>&lt; F & G /&gt;</span> Blog ──</Typography>
+                    </Box>
+
+                    <Box>
+                        {/* <Typography variant='h5'>{currentUser.displayName}</Typography> */}
+                        <Tooltip title={currentUser ? "Open Personal Pages" : "Account Pages"}>
+                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+
+                                {/* {currentUser.photoURL */}
+                                {/* ? */}
+                                {/* <Avatar alt="Remy Sharp" src={currentUser.photoURL} /> */}
+                                {/* : */}
+                                <AccountCircleTwoTone />
+                                {/* } */}
+                            </IconButton>
+                        </Tooltip>
+                        <Menu
+                            sx={{ mt: '45px' }}
+                            id="menu-appbar"
+                            anchorEl={anchorElUser}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={Boolean(anchorElUser)}
+                            onClose={handleCloseUserMenu}
+                        >
+                            {settings.map((setting) => (
+                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                    {
+                                        setting === 'Logout'
+                                            ?
+                                            <Typography sx={{ textDecoration: 'underline', fontFamily: 'Girassol, cursive' }} onClick={handleLogout}>{setting}</Typography>
+                                            :
+                                            <Link to={`/${(setting).toLocaleLowerCase()}`} textAlign="center">{setting}</Link>
+                                    }
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </Box>
+                </Toolbar>
+            </Container>
+        </AppBar>
     );
 };
 export default Navbar;
