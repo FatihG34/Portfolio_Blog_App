@@ -35,7 +35,7 @@ const Navbar = () => {
     }
 
     return (
-        <AppBar position="static" color='info'>
+        <AppBar position="static" color='success'>
             <Container maxWidth="xl" >
                 <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between' }} >
 
@@ -47,7 +47,7 @@ const Navbar = () => {
                     </Container>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        <Typography variant='h5' href='/' component='a' sx={{ textDecoration: 'none', color: 'inherit' }} >── <span>&lt; F & G /&gt;</span> Blog ──</Typography>
+                        <Typography variant='h5' href='/' component='a' sx={{ textDecoration: 'none', color: 'inherit' }} ><span>&lt; My Page/ &gt;</span></Typography>
                     </Box>
 
                     <Box>
