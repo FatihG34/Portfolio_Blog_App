@@ -1,17 +1,95 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import firebase from "./firebase";
+import {
+    createUserWithEmailAndPassword,
+    getAuth,
+    GoogleAuthProvider,
+    onAuthStateChanged,
+    sendPasswordResetEmail,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    signOut,
+    updateProfile
+} from 'firebase/auth'
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyBnCaodOHnrCeE2UY7mTIPcuovS4rosf3Y",
-    authDomain: "portfolio-699a8.firebaseapp.com",
-    projectId: "portfolio-699a8",
-    storageBucket: "portfolio-699a8.appspot.com",
-    messagingSenderId: "87551933839",
-    appId: "1:87551933839:web:73123b920f0cc5cdfcdffa"
+
+
+const auth = getAuth(firebase);
+
+export const createUser = async (email, password, navigate, displayName) => {
+    try {
+        let userCredential = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
+        await updateProfile(auth.currentUser, {
+            displayName: displayName,
+        });
+        // toastSuccessNotify('Registered successfully!');
+        navigate('/');
+        console.log(userCredential);
+    } catch (err) {
+        // toastErrorNotify(err.message);
+    }
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+export const signIn = async (email, password, navigate) => {
+    try {
+        let userCredential = await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
+        navigate('/');
+        // toastSuccessNotify('Logged in successfully!');
+        console.log(userCredential);
+    } catch (err) {
+        // toastErrorNotify(err.message);
+        console.log(err);
+    }
+};
+
+export const userObserver = (setCurrentUser) => {
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            setCurrentUser(user);
+            // console.log(user)
+        } else {
+            // User is signed out
+            setCurrentUser(false);
+        }
+    });
+};
+
+export const logOut = () => {
+    signOut(auth);
+};
+
+export const forgotPassword = (email) => {
+    sendPasswordResetEmail(auth, email)
+        .then(() => {
+            // Password reset email sent!
+            // toastWarnNotify('Please check your mail box!');
+            alert("Please check your mail box!");
+        })
+        .catch((err) => {
+            // toastErrorNotify(err.message);
+            alert(err.message);
+            // ..
+        });
+};
+
+export const signUpProvider = (navigate) => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+        .then((result) => {
+            console.log(result);
+            navigate('/');
+            // toastSuccessNotify('Logged out successfully!');
+        })
+        .catch((error) => {
+            // Handle Errors here.
+            console.log(error);
+        });
+};

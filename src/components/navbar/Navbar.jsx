@@ -30,7 +30,8 @@ const Navbar = () => {
         setAnchorElUser(null);
     };
     const handleLogout = () => {
-        navigate('/')
+        //* clear user data
+        navigate('/login')
 
     }
 
@@ -43,7 +44,9 @@ const Navbar = () => {
                         <img src={FGlogo} alt="logo" width='100%' onClick={null} />
                     </Container>
                     <Container sx={{ display: { xs: 'flex', md: 'none' }, width: '100px' }}>
-                        <img src={FGlogo} alt="FGlogo" width='100%' />
+                        <Link to={"/"}>
+                        <img src={FGlogo} alt="FGlogo" width='100%'/>
+                        </Link>
                     </Container>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
